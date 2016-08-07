@@ -95,21 +95,27 @@
 
 @media (min-width: 992px) {
     .col-md-12 {
-        width: initial;
+        /*width: initial;*/
     }
 }
 
 #application {
-    position: absolute;
-    bottom: 0;
+    /*position: absolute;
+    bottom: 0;*/
     background-color: lightgray;
-    margin-left: 6px;
+    margin-left: 0;
+    vertical-align: bottom;
 }
 
 #message {
     border-style: inset;
     margin-bottom: 8px;
-    width: 300px;
+    width: 100%;
     margin-top: 8px;
     border-radius: 2px;
+}
+
+#discussioncontainer {
+         height: 500px;
+    overflow-y: scroll;
 }

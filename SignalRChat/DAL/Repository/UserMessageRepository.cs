@@ -43,8 +43,10 @@ namespace SignalRChat.DAL.Repository
             {
                 try
                 {
-                    if (!userMessageContext.Users.Any(x => x.Name == name))
-                        userMessageContext.Users.Add(new User { Name = name });
+                    if (userMessageContext.Users.Any(x => x.Name == name)) return true;
+
+                    userMessageContext.Users.Add(new User { Name = name });
+                    userMessageContext.SaveChanges();
 
                     return true;
                 }
