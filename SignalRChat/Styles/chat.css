@@ -1,0 +1,115 @@
+﻿body {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+    background: #f7f7f7;
+}
+
+.header,
+.marketing,
+.footer {
+    padding-right: 1rem;
+    padding-left: 1rem;
+}
+
+.header {
+    padding-bottom: 1rem;
+    border-bottom: .05rem solid #e5e5e5;
+}
+
+    .header h3 {
+        margin-top: 0;
+        margin-bottom: 0;
+        line-height: 3rem;
+    }
+
+.footer {
+    padding-top: 1.5rem;
+    color: #777;
+    border-top: .05rem solid #e5e5e5;
+}
+
+@media (min-width: 48em) {
+    .container {
+        max-width: 46rem;
+    }
+}
+
+.container-narrow > hr {
+    margin: 2rem 0;
+}
+
+.jumbotron {
+    text-align: center;
+    border-bottom: .05rem solid #e5e5e5;
+}
+
+    .jumbotron .btn {
+        padding: .75rem 1.5rem;
+        font-size: 1.5rem;
+    }
+
+@media screen and (min-width: 48em) {
+    /* Remove the padding we set earlier */
+    .header,
+    .marketing,
+    .footer {
+        padding-right: 0;
+        padding-left: 0;
+    }
+    /* Space out the masthead */
+    .header {
+        margin-bottom: 2rem;
+    }
+    /* Remove the bottom border on the jumbotron for visual effect */
+    .jumbotron {
+        border-bottom: 0;
+    }
+}
+
+.nav-pills .nav-item.open .nav-link, .nav-pills .nav-item.open .nav-link:focus, .nav-pills .nav-item.open .nav-link:hover, .nav-pills .nav-link.active, .nav-pills .nav-link.active:focus, .nav-pills .nav-link.active:hover {
+    color: #fff;
+    cursor: default;
+    background-color: #0275d8;
+}
+
+.nav-pills .nav-link {
+    display: block;
+    padding: .5em 1em;
+    border-radius: .25rem;
+}
+
+.nav {
+    float: right;
+}
+
+#loginsection, #application {
+    display: none;
+}
+
+@media (min-width: 768px) {
+    .modal-dialog {
+        width: 280px !important;
+        margin: 30px auto;
+    }
+}
+
+@media (min-width: 992px) {
+    .col-md-12 {
+        width: initial;
+    }
+}
+
+#application {
+    position: absolute;
+    bottom: 0;
+    background-color: lightgray;
+    margin-left: 6px;
+}
+
+#message {
+    border-style: inset;
+    margin-bottom: 8px;
+    width: 300px;
+    margin-top: 8px;
+    border-radius: 2px;
+}

@@ -1,0 +1,50 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Chatter</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="Styles/chat.css" />
+</head>
+<body>
+    <div class="container">
+        <div class="header clearfix">
+            <nav>
+                <ul class="nav nav-pills pull-xs-right">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#loginsection" id="loginnavv" data-toggle="modal">Login</a>
+                    </li>
+                </ul>
+            </nav>
+            <h3 class="text-muted">Chatter</h3>
+        </div>
+        <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" id="loginsection">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                        <h4 class="modal-title">Please enter your username</h4>
+                    </div>
+                    <div class="modal-body">
+                        <input type="text" id="username" />
+                        <button type="button" class="btn btn-primary" id="login" value="Login" data-dismiss="modal">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row col-md-12">
+            <div id="discussion"></div>
+        </div>
+        <div class="row col-md-12" id="application">
+            <input type="text" id="message" />
+        </div>
+        <div class="row col-md-12" id="welcome">
+            <h2>Welcome to Chatter</h2>
+        </div>
+    </div>
+    <script src="Scripts/Libraries/jquery-1.10.2.min.js"></script>
+    <script src="Scripts/Libraries/jquery.signalR-2.1.2.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="signalr/hubs"></script>
+    <script src="Scripts/Custom/chat.js"></script>
+</body>
+</html>
