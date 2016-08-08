@@ -5,8 +5,10 @@
     var chat = $.connection.chatHub;
 
     chat.client.showLoggedInStatus = function () {
-        $("#loginnavv").text("Logout");
+        $("#loginnavv").text("Logout").attr("data-toggle", "");
         $("#application").show();
+        $("#discussioncontainer").show();
+        $("#login-status").val("1");
     };
 
     chat.client.sendMessageToAllClients = function (name, message) {
@@ -14,6 +16,8 @@
         var encodedMsg = $("<div />").text(message).html();
 
         $("#discussion").append("<div><strong>" + encodedName + "</strong>:&nbsp;&nbsp;" + encodedMsg + "</div>");
+        var objDiv = document.getElementById("discussioncontainer");
+        objDiv.scrollTop = objDiv.scrollHeight;
     };
 
     $("#message").focus();
@@ -33,6 +37,10 @@
 var showLoginSectionOnClick = function () {
     $("#loginnavv").click(function () {
         $("#welcome").hide();
+        var loginStatus = $("#login-status").val();
+        if (loginStatus == 1) {
+            window.location.reload(true);
+        };
     });
 };
 
