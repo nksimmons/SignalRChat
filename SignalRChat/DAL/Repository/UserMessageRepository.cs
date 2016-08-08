@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using SignalRChat.DAL.Models;
 
@@ -8,6 +9,8 @@ namespace SignalRChat.DAL.Repository
     {
         bool SendMessageToDb(string name, string message);
         bool AddUserToDbIfNotAlreadyExisting(string name);
+        List<Message> GetRecentMessages();
+        string GetUserNameFromUserId(int userId);
     }
     public class UserMessageRepository : IUserMessageRepository
     {
@@ -55,6 +58,39 @@ namespace SignalRChat.DAL.Repository
                     Console.WriteLine(e);
                     return false;
                 }
+            }
+        }
+
+        public List<Message> GetRecentMessages()
+        {
+            try
+            {
+                using (var userMessageContext = new UserMessageContext())
+                {
+                    var messages = userMessageContext.Messages.Take(15).OrderByDescending(x => x.Id).ToList();
+                    return messages;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return null;
+            }
+        }
+
+        public string GetUserNameFromUserId(int userId)
+        {
+            try
+            {
+                using (var userMessageContext = new UserMessageContext())
+                {
+                    return userMessageContext.Users.Where(x => x.Id == userId).Select(x => x.Name).FirstOrDefault();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return null;
             }
         }
     }
