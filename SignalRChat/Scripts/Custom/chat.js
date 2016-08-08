@@ -11,7 +11,7 @@
         $("#login-status").val("1");
     };
 
-    $("#username").enterKey(function () {
+    $("#username").enterKey(function() {
         $("#login").trigger("click");
     });
 
