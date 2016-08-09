@@ -73,3 +73,4 @@ D:\PersonalDev\Skarpline\SignalRChat\bin\Microsoft.Owin.Security.xml
 D:\PersonalDev\Skarpline\SignalRChat\bin\Newtonsoft.Json.xml
 D:\PersonalDev\Skarpline\SignalRChat\obj\Debug\SignalRChat.dll
 D:\PersonalDev\Skarpline\SignalRChat\obj\Debug\SignalRChat.pdb
+D:\PersonalDev\Skarpline\SignalRChat\obj\Debug\SignalRChat.csprojResolveAssemblyReference.cache
