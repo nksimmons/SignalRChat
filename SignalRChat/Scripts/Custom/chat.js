@@ -24,6 +24,17 @@
         objDiv.scrollTop = objDiv.scrollHeight;
     };
 
+    chat.client.showConnectedClients = function (name) {
+        var encodedName = $("<div />").text(name).html();
+
+        $("#client-list").append("<p class='client-name' id='client-name-" + encodedName + "'>" + encodedName + "</p>");
+    };
+
+    chat.client.removeDisconnectedClientFromClientList = function(nameOfClient) {
+        var clientNameDomId = "#client-name-" + nameOfClient;
+        $(clientNameDomId).remove();
+    };
+
     $("#message").focus();
 
     $.connection.hub.start().done(function() {
@@ -41,6 +52,7 @@
 var showLoginSectionOnClick = function() {
     $("#loginnavv").click(function() {
         $("#welcome").hide();
+        $("#client-list-container").show();
         var loginStatus = $("#login-status").val();
         if (loginStatus == 1) {
             window.location.reload(true);

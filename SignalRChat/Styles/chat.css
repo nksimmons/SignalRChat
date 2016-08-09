@@ -113,3 +113,22 @@
 }
 
 #discussion { color: white; }
+
+#client-list-container {
+    display: none;
+    position: absolute;
+    top: 55px;
+    right: 500px;
+}
+
+p.client-name {
+    margin: 0 0 0px;
+    font-style: italic;
+    text-transform: capitalize;
+}
+
+#client-list h3 {
+    border-bottom-style: solid;
+    border-bottom-color: #c5c5c5;
+    border-bottom-width: thin;
+}

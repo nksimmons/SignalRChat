@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 using Microsoft.AspNet.SignalR;
-using Microsoft.Owin;
 using SignalRChat.DAL.Repository;
 using SignalRChat.Models;
 using SignalRChat.Models.ViewModels;
@@ -37,6 +35,13 @@ namespace SignalRChat
             };
 
             ConnectedClientsCache.ConnectedClientsList.Add(transactionIdentity);
+
+            Clients.Others.showConnectedClients(transactionIdentity.Name);
+
+            foreach (var connectedClient in ConnectedClientsCache.ConnectedClientsList)
+            {
+                Clients.Caller.showConnectedClients(connectedClient.Name);
+            }
         }
 
         public void Send(string name, string message)
@@ -56,6 +61,9 @@ namespace SignalRChat
             var connectionToken = Context.QueryString.Get("connectionToken");
 
             var indexOfClient = ConnectedClientsCache.ConnectedClientsList.FindIndex(x => x.ConnectionToken == connectionToken);
+            var nameOfClient = ConnectedClientsCache.ConnectedClientsList.Where(x => x.ConnectionToken == connectionToken).Select(x => x.Name).FirstOrDefault();
+
+            Clients.All.removeDisconnectedClientFromClientList(nameOfClient);
 
             try
             {
