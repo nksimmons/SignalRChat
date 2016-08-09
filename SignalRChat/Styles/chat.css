@@ -28,10 +28,6 @@
     border-top: .05rem solid #e5e5e5;
 }
 
-@media (min-width: 48em) {
-    .container { max-width: 46rem; }
-}
-
 .container-narrow > hr { margin: 2rem 0; }
 
 .jumbotron {
@@ -104,7 +100,6 @@
 }
 
 #discussioncontainer {
-    height: 500px;
     margin-left: 0;
     overflow-y: scroll;
     display: none;
@@ -116,13 +111,14 @@
 
 #client-list-container {
     display: none;
-    position: absolute;
+    /*position: absolute;
     top: 55px;
-    right: 500px;
+    right: 500px;*/
+    float: right;
 }
 
 p.client-name {
-    margin: 0 0 0px;
+    margin: 0 10px 0;
     font-style: italic;
     text-transform: capitalize;
 }
@@ -131,4 +127,19 @@ p.client-name {
     border-bottom-style: solid;
     border-bottom-color: #c5c5c5;
     border-bottom-width: thin;
+    color: #565656;
+    margin-top: 0;
+}
+
+.first-row {height: 500px}
+
+#welcome {
+    text-align: center;
+}
+
+.header h1 {
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 0;
+    color: #9a9a9a;
 }

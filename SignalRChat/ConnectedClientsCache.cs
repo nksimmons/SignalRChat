@@ -19,6 +19,7 @@ namespace SignalRChat
 
                 _connectedClientsList = new List<TransactionIdentityModel>();
                 HttpContext.Current.Cache.Insert("ConnectedClientsList", _connectedClientsList);
+
                 return _connectedClientsList;
             }
             set

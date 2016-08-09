@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNet.SignalR;
@@ -11,7 +10,8 @@ namespace SignalRChat
 {
     public class ChatHub : Hub
     {
-        readonly IUserMessageRepository _userMessageRepository;
+        public static int MaxNumberOfUsers { get; } = 20;
+        private readonly IUserMessageRepository _userMessageRepository;
         public ConnectedClientsCache ClientsCache { get; }
 
         public ChatHub()
@@ -22,25 +22,24 @@ namespace SignalRChat
 
         public void Login(string name)
         {
-            _userMessageRepository.AddUserToDbIfNotAlreadyExisting(name);
-
-            Clients.Caller.manipulateDOMForLoggedInStatus();
-
-            SendRecentMessagesToClient();
-
-            var transactionIdentity = new TransactionIdentityModel
+            if (!(ConnectedClientsCache.ConnectedClientsList.Count >= MaxNumberOfUsers))
             {
-               ConnectionToken = Context.QueryString.Get("connectionToken"),
-                Name = name
-            };
+                _userMessageRepository.AddUserToDbIfNotAlreadyExisting(name);
 
-            ConnectedClientsCache.ConnectedClientsList.Add(transactionIdentity);
+                Clients.Caller.manipulateDOMForLoggedInStatus();
 
-            Clients.Others.showConnectedClients(transactionIdentity.Name);
+                SendRecentMessagesToClient();
 
-            foreach (var connectedClient in ConnectedClientsCache.ConnectedClientsList)
+                var transactionIdentity = GetUserTransaction(name);
+
+                AddTransactionToAppCache(transactionIdentity);
+
+                ShowConnectedClients(transactionIdentity);
+            }
+
+            else
             {
-                Clients.Caller.showConnectedClients(connectedClient.Name);
+                Clients.Caller.alertAtMaxCapacity();
             }
         }
 
@@ -51,36 +50,48 @@ namespace SignalRChat
             _userMessageRepository.SendMessageToDb(name, message);
         }
 
-        public override Task OnConnected()
-        {
-            return base.OnConnected();
-        }
-
         public override Task OnDisconnected(bool stopCalled)
         {
-            var connectionToken = Context.QueryString.Get("connectionToken");
+            int indexOfClient;
+            string nameOfClient;
 
-            var indexOfClient = ConnectedClientsCache.ConnectedClientsList.FindIndex(x => x.ConnectionToken == connectionToken);
-            var nameOfClient = ConnectedClientsCache.ConnectedClientsList.Where(x => x.ConnectionToken == connectionToken).Select(x => x.Name).FirstOrDefault();
+            GetCurrentUser(out indexOfClient, out nameOfClient);
+
+            if (nameOfClient == null) return base.OnDisconnected(stopCalled);
 
             Clients.All.removeDisconnectedClientFromClientList(nameOfClient);
 
-            try
-            {
-                ConnectedClientsCache.ConnectedClientsList.RemoveAt(indexOfClient);
-            }
-
-            catch (Exception exception)
-            {
-                Console.WriteLine(exception);
-            }
+            ConnectedClientsCache.ConnectedClientsList.RemoveAt(indexOfClient);
 
             return base.OnDisconnected(stopCalled);
         }
 
         #region Helpers
+        private void ShowConnectedClients(TransactionIdentityModel transactionIdentity)
+        {
+            Clients.Others.showConnectedClients(transactionIdentity.Name);
 
-        void SendRecentMessagesToClient()
+            foreach (var connectedClient in ConnectedClientsCache.ConnectedClientsList)
+            {
+                Clients.Caller.showConnectedClients(connectedClient.Name);
+            }
+        }
+
+        private static void AddTransactionToAppCache(TransactionIdentityModel transactionIdentity)
+        {
+            ConnectedClientsCache.ConnectedClientsList.Add(transactionIdentity);
+        }
+
+        private TransactionIdentityModel GetUserTransaction(string name)
+        {
+            return new TransactionIdentityModel
+            {
+                ConnectionToken = Context.QueryString.Get("connectionToken"),
+                Name = name
+            };
+        }
+
+        private void SendRecentMessagesToClient()
         {
             var recentUserMessages = GetRecentMessagesFromDb();
 
@@ -90,13 +101,21 @@ namespace SignalRChat
             }
         }
 
-        IEnumerable<UserMessageVm> GetRecentMessagesFromDb()
+        private IEnumerable<UserMessageVm> GetRecentMessagesFromDb()
         {
             return _userMessageRepository.GetRecentMessages().Select(message => new UserMessageVm
             {
                 Message = message.Content,
                 UserName = _userMessageRepository.GetUserNameFromUserId(message.UserId)
             }).Reverse().ToList();
+        }
+
+        private void GetCurrentUser(out int indexOfClient, out string nameOfClient)
+        {
+            var connectionToken = Context.QueryString.Get("connectionToken");
+
+            indexOfClient = ConnectedClientsCache.ConnectedClientsList.FindIndex(x => x.ConnectionToken == connectionToken);
+            nameOfClient = ConnectedClientsCache.ConnectedClientsList.Where(x => x.ConnectionToken == connectionToken).Select(x => x.Name).FirstOrDefault();
         }
 
         #endregion
